@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "subtrigger"
     gem.summary = %Q{Create post-commit triggers for Subversion commit messages}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.description = %Q{This gem allows you to create simple Ruby triggers for Subversion commit messages.}
     gem.email = "arjan@arjanvandergaag.nl"
     gem.homepage = "http://github.com/avdgaag/subtrigger"
     gem.authors = ["Arjan van der Gaag"]
