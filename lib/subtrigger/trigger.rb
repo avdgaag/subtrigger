@@ -20,7 +20,6 @@ module Subtrigger
   # an exception will be raised. When no trigger applies, it will quit
   # silently.
   class Trigger
-    attr_reader :message
     class << self
       @triggers = {}
 
