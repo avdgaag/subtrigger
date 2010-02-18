@@ -1,5 +1,4 @@
 $:.unshift File.dirname(__FILE__)
-
 # = Subtrigger
 #
 # Subtrigger is a tiny tool for firing callback methods based on triggers in
@@ -29,10 +28,10 @@ $:.unshift File.dirname(__FILE__)
 # Subtrigger allows you to send notification e-mails to developers:
 #
 #   # in your trigger:
-#   Subtrigger::Email.new("#{repo.author}@company.tld",
-#                         'svn@company.tld',
-#                         'Trigger notification',
-#                         "Dear #{repo.author}, ...")
+#   Subtrigger::Email.new(:to => "#{repo.author}@company.tld",
+#                         :from => 'svn@company.tld',
+#                         :subject => 'Trigger notification',
+#                         :body => "Dear #{repo.author}, ...")
 #
 # == Usage
 #

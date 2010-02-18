@@ -7,10 +7,10 @@ module Subtrigger
   #
   # == Usage example
   #
-  #   Email.new('john@cleese.com', # from
-  #             'eric@idle.com',   # to
-  #             'Fired',           # subject
-  #             'Your post-commit hook has just fired').send
+  #   Email.new(:to => 'john@cleese.com',
+  #             :from => 'eric@idle.com',
+  #             :subject => 'Fired',
+  #             :body => 'Your post-commit hook has just fired').send
   #
   # If +sendmail+ can not be found on your system an exception will be raised.
   #--
@@ -19,9 +19,13 @@ module Subtrigger
     attr_accessor :from, :to, :subject, :body, :development
 
     # Sets up a new message and tries to find +sendmail+ on your system.
-    def initialize(to, from, subject, body, development = false)
-      @to, @from, @subject, @body, @development = to, from, subject, body, development
-      @sendmail = `which sendmail`.strip
+    def initialize(options = {})
+      @to          = options[:to]
+      @from        = options[:from]
+      @subject     = options[:subject]
+      @body        = options[:body]
+      @development = options[:development] || false
+      @sendmail    = `which sendmail`.strip
       raise 'Could not find sendmail; aborting.' if @sendmail.nil?
     end
 
