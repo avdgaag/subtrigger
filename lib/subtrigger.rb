@@ -44,10 +44,11 @@ $:.unshift File.dirname(__FILE__)
 #   #!/usr/local/bin/ruby
 #   require 'rubygems'
 #   require 'subtrigger'
-#   Subtrigger.define_trigger(/foo/) do |matches, repo|
+#   Subtrigger.on(/foo/) { |matches, repo|
 #     puts "#{repo.author} comitted foo!"
-#   end
-#   Subtrigger.run(*ARGV)
+#   }.on(/bar/) { |matches, repo|
+#     puts "#{repo.author} comitted bar!"
+#   }.run(*ARGV)
 #
 # Make sure your gems are installed and the correct permissions are set. Note
 # that Subversion runs its hooks in an empty environment, with no PATH set,
@@ -70,9 +71,12 @@ module Subtrigger
     puts "Error: #{e}" and exit(1)
   end
 
-  # Define a new +Trigger+ object -- shortcut method to <tt>Trigger#define</tt>
-  def self.define_trigger(pattern, &block)
+  # Define a new +Trigger+ object -- shortcut method to
+  # <tt>Trigger#define</tt>. To enable method chaining this method returns
+  # itself.
+  def self.on(pattern, &block)
     Trigger.define(pattern, &block)
+    self
   end
 end
 
