@@ -6,10 +6,9 @@ Here's a quick example:
 
   # use as post-commit hook in /path/to/repo/hooks
   require 'subtrigger'
-  Subtrigger.define_trigger(/log: (\w+)/) do |matches, repo|
+  Subtrigger.on(/log: (\w+)/) { |matches, repo|
     puts "#{repo.author} committed #{matches[0]} in revision #{repo.revision}"
-  end
-  Subtrigger.run(*ARGV)
+  }.run(*ARGV)
 
 == Documentation
 

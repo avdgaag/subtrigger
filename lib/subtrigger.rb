@@ -14,7 +14,7 @@ $:.unshift File.dirname(__FILE__)
 # ...then you can trigger the deployment of that project to a staging server
 # using a +Trigger+:
 #
-#   Subtrigger.define_trigger(/\[deploy\]/) do |matches, repo|
+#   Subtrigger.on(/\[deploy\]/) do |matches, repo|
 #     # do some smart stuff here
 #   end
 #
