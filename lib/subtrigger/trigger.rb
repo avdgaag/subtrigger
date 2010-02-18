@@ -31,6 +31,14 @@ module Subtrigger
         end
       end
 
+      def triggers
+        @triggers ||= {}
+      end
+
+      def reset
+        @triggers = {}
+      end
+
       # Create a new Trigger object and add it to the stack.
       def define(pattern, &block)
         (@triggers ||= {})[pattern] = block;

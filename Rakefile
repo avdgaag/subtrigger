@@ -6,13 +6,12 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "subtrigger"
     gem.summary = %Q{Create post-commit triggers for Subversion commit messages}
-    gem.description = %Q{This gem allows you to create simple Ruby triggers for Subversion commit messages.}
+    gem.description = %Q{This gem allows you to create simple Ruby triggers for Subversion commit messages, responding to keywords in your log messages to send e-mails, deploy sites or do whatever you need.}
     gem.email = "arjan@arjanvandergaag.nl"
     gem.homepage = "http://github.com/avdgaag/subtrigger"
     gem.authors = ["Arjan van der Gaag"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     gem.add_development_dependency "mocha", ">= 0"
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
