@@ -17,6 +17,7 @@ module Subtrigger
   # TODO: Use a hash of options rather than plain arguments.
   class Email
     attr_accessor :from, :to, :subject, :body, :development
+    attr_reader :sendmail
 
     # Sets up a new message and tries to find +sendmail+ on your system.
     def initialize(options = {})
@@ -25,7 +26,7 @@ module Subtrigger
       @subject     = options[:subject]
       @body        = options[:body]
       @development = options[:development] || false
-      @sendmail    = `which sendmail`.strip
+      @sendmail    = Subtrigger.sendmail || `which sendmail`.strip
       raise 'Could not find sendmail; aborting.' if @sendmail.nil?
     end
 
@@ -33,7 +34,7 @@ module Subtrigger
     def send
       message = header + "\n" + body
       unless development
-        fd = open("|#{@sendmail} #{@to}", "w")
+        fd = open("|#{sendmail} #{to}", "w")
         fd.print(message)
         fd.close
       end

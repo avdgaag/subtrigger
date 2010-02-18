@@ -32,7 +32,7 @@ module Subtrigger
       raise "Invalid revision number '#{revision}'" unless revision.to_i > 0
       @path = path
       @revision = revision.to_i
-      @svn_path = `which svn`.strip
+      @svn_path = Subtrigger.svn || `which svn`.strip
       raise 'Could not locate svn' if @svn_path.nil?
     end
 
@@ -97,7 +97,7 @@ module Subtrigger
 
     # Runs an arbitrary +svn+ command and returns its results.
     def exec(command)
-      command = "#{@svn_path} #{command}"
+      command = "#{@svn_path} #{command} #{Subtrigger.svn_args}"
       `#{command}`
     end
 
@@ -105,7 +105,7 @@ module Subtrigger
 
     # Execute a +svnlook+ command for the current repository and revision.
     def look_at(subcommand)
-      `#{File.join(File.dirname(@svn_path), 'svnlook')} #{subcommand} #{@path} -r #{@revision}`
+      `#{File.join(File.dirname(@svn_path), 'svnlook')} #{subcommand} #{@path} -r #{@revision} #{Subtrigger.svn_args}`
     end
 
     # Get the contents of a line from the <tt>svnlook info</tt> output, which

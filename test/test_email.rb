@@ -13,6 +13,11 @@ class TestEmail < Test::Unit::TestCase
       @message = @email.send
     end
 
+    should 'use custom sendmail location' do
+      Subtrigger.sendmail = 'foo'
+      assert_equal('foo', Subtrigger::Email.new.sendmail)
+    end
+
     should 'set all e-mail attributes' do
       assert_equal('from@from.com', @email.from)
       assert_equal('to@to.com', @email.to)

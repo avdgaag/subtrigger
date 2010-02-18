@@ -54,8 +54,10 @@ $:.unshift File.dirname(__FILE__)
 # that Subversion runs its hooks in an empty environment, with no PATH set,
 # and you will also see no output.
 module Subtrigger
+  attr_accessor :svn, :sendmail, :svn_args
+
   # Output the version number for this gem by reading /VERSION
-  def self.version
+  def version
     File.read(File.join(File.dirname(__FILE__), *%w{.. VERSION}))
   end
 
@@ -65,7 +67,7 @@ module Subtrigger
   # number.
   #
   # If an exception occurs, the program will quit with its error message.
-  def self.run(*args)
+  def run(*args)
     Trigger.run(Repository.new(*args))
   rescue Exception => e
     puts "Error: #{e}" and exit(1)
@@ -74,10 +76,11 @@ module Subtrigger
   # Define a new +Trigger+ object -- shortcut method to
   # <tt>Trigger#define</tt>. To enable method chaining this method returns
   # itself.
-  def self.on(pattern, &block)
+  def on(pattern, &block)
     Trigger.define(pattern, &block)
     self
   end
+  extend self
 end
 
 require 'subtrigger/email'
