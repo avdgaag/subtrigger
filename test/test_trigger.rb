@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestSubtrigger < Test::Unit::TestCase
+class TestTrigger < Test::Unit::TestCase
   context 'in a clean state' do
     setup do
       Subtrigger::Trigger.reset
