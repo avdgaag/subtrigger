@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "lib/subtrigger/email.rb",
      "lib/subtrigger/repository.rb",
      "lib/subtrigger/trigger.rb",
+     "subtrigger.gemspec",
      "test/helper.rb",
      "test/test_email.rb",
      "test/test_repository.rb",
