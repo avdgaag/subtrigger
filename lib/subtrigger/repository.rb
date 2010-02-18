@@ -105,7 +105,7 @@ module Subtrigger
 
     # Execute a +svnlook+ command for the current repository and revision.
     def look_at(subcommand)
-      `#{File.join(File.dirname(@svn_path), 'svnlook')} #{subcommand} #{@path} -r #{@revision} #{Subtrigger.svn_args}`
+      `#{File.join(File.dirname(@svn_path), 'svnlook')} #{subcommand} #{@path} -r #{@revision}`
     end
 
     # Get the contents of a line from the <tt>svnlook info</tt> output, which
