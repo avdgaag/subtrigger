@@ -71,7 +71,14 @@ module Subtrigger
     # <tt>group1/project3/trunk</tt> and <tt>project3</tt>.
     def changed_projects #:yields: full_path, project_path
       (@dirs_changed ||= look_at('dirs-changed')).split("\n").each do |dir|
-        yield dir, $1 if dir =~ /([\w\-\.]+)\/(?:trunk|branches|tags)/
+        if dir =~ /([\w\-\.]+)\/(trunk|branches|tags)/
+          project_name = $1
+          top_level_dir = case dir
+          when /^(.*\/trunk)/: $1
+          when /^(.*\/(?:tags|branches)\/\w+)/: $1
+          end
+          yield top_level_dir, project_name
+        end
       end
     end
 

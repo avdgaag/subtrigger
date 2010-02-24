@@ -35,9 +35,17 @@ class TestRepository < Test::Unit::TestCase
     end
 
     should 'yield changed directories' do
-      @r.expects(:look_at).with('dirs-changed').returns("www.project1.com/trunk\nsub/www.project2.com/tags/v1")
+      lines = <<-EOS
+www.project1.com/trunk
+www.project2.com/trunk/inc
+sub/www.project2.com/tags/v1
+sub/www.project2.com/tags/v1/test
+EOS
+      @r.expects(:look_at).with('dirs-changed').returns(lines)
       yieldings = [
         ['www.project1.com/trunk', 'www.project1.com'],
+        ['www.project2.com/trunk', 'www.project2.com'],
+        ['sub/www.project2.com/tags/v1', 'www.project2.com'],
         ['sub/www.project2.com/tags/v1', 'www.project2.com']
       ]
       i = 0
