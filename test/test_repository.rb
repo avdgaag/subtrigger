@@ -26,7 +26,7 @@ class TestRepository < Test::Unit::TestCase
 
     should 'use custom configuration' do
       Subtrigger::Repository.any_instance.expects(:`).with('/usr/foo/svn info --non-interactive').once
-      Subtrigger::Repository.any_instance.expects(:`).with('/usr/foo/svnlook info path/to/repo -r 1 --non-interactive').once.returns('')
+      Subtrigger::Repository.any_instance.expects(:`).with('/usr/foo/svnlook info path/to/repo -r 1').once.returns('')
       Subtrigger.svn = '/usr/foo/svn'
       Subtrigger.svn_args = '--non-interactive'
       @r = Subtrigger::Repository.new('path/to/repo', 1)
