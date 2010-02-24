@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{subtrigger}
-  s.version = "0.2.2"
+  s.version = "0.2.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Arjan van der Gaag"]
-  s.date = %q{2010-02-18}
+  s.date = %q{2010-02-24}
   s.default_executable = %q{subtrigger}
   s.description = %q{This gem allows you to create simple Ruby triggers for Subversion commit messages, responding to keywords in your log messages to send e-mails, deploy sites or do whatever you need.}
   s.email = %q{arjan@arjanvandergaag.nl}
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/avdgaag/subtrigger}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Create post-commit triggers for Subversion commit messages}
   s.test_files = [
     "test/helper.rb",
