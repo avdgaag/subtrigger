@@ -50,9 +50,34 @@ $:.unshift File.dirname(__FILE__)
 #     puts "#{repo.author} comitted bar!"
 #   }.run(*ARGV)
 #
+# === Command Line Usage
+#
+# There is a command-line tool available for running Subtrigger. It simply
+# requires the Subtrigger library and calls +run+. Most of the time, you'll
+# want to write your own script and <tt>require 'subtrigger'</tt> yourself.
+#
+# You can run <tt>subtrigger -v</tt> to see the currently installed version
+# of Subtrigger.
+#
+# === Configuration
+#
+# Since subversion usually calls its hooks in an empty environment (even
+# without a $PATH) you might need to make some settings manually:
+#
+#   Subtrigger.svn = '/path/to/svn'
+#   Subtrigger.sendmail = '/path/to/sendmail'
+#   Subtrigger.svn_args = ''
+#
+# The <tt>svn_args</tt> setting is a string appended to every +svn+ command.
+# This allows you to, for example, set a custom username and password. You
+# might also want to apply the <tt>--non-interactive</tt> argument. For
+# example:
+#
+#   Subtrigger.svn_args = '--username my_name --password secret --non-interactive'
+#
 # Make sure your gems are installed and the correct permissions are set. Note
-# that Subversion runs its hooks in an empty environment, with no PATH set,
-# and you will also see no output.
+# that Subversion hooks generate no output, so run your hooks manually for
+# testing purposes.
 module Subtrigger
   attr_accessor :svn, :sendmail, :svn_args
 
