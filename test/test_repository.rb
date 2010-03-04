@@ -19,6 +19,11 @@ class TestRepository < Test::Unit::TestCase
       assert_equal('path/to/repo/foo', @r.path('foo'))
     end
 
+    should 'read all lines of message from info' do
+      @r.expects(:look_at).with('info').returns("Arjan\ndate\n100\nFoo\nBar\nBaz")
+      assert_equal("Foo\nBar\nBaz", @r.message)
+    end
+
     should 'use svnlook info' do
       @r.expects(:look_at).with('info').returns('Foo')
       assert_equal('Foo', @r.author)

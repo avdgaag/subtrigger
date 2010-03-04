@@ -123,9 +123,13 @@ module Subtrigger
     #   Log message length
     #   Log message
     #
+    # Note that the log messages might have multiple lines. Asking for line 3
+    # (actually 4, counting from 0) will give you that line and all lines
+    # after that.
     def get_line_from_info(n)
       @info ||= look_at('info')
-      @info.split("\n")[n]
+      parts = @info.split("\n")
+      n = n >= 3 ? parts[3..parts.size].join("\n") : parts[n]
     end
   end
 end
