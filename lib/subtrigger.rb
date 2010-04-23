@@ -44,7 +44,9 @@ $:.unshift File.dirname(__FILE__)
 #   #!/usr/local/bin/ruby
 #   require 'rubygems'
 #   require 'subtrigger'
-#   Subtrigger.on(/foo/) { |matches, repo|
+#   Subtrigger.configure { |c|
+#     c.svn = '/usr/bin/svn'
+#   }.on(/foo/) { |matches, repo|
 #     puts "#{repo.author} comitted foo!"
 #   }.on(/bar/) { |matches, repo|
 #     puts "#{repo.author} comitted bar!"
@@ -68,6 +70,14 @@ $:.unshift File.dirname(__FILE__)
 #   Subtrigger.sendmail = '/path/to/sendmail'
 #   Subtrigger.svn_args = ''
 #
+# You can alternatively use a block:
+#
+#   Subtrigger.configure do |c|
+#     c.svn = '/path/to/svn'
+#   end
+#
+# This will return Subtrigger itself, so you can chain further commands.
+#
 # The <tt>svn_args</tt> setting is a string appended to every +svn+ command.
 # This allows you to, for example, set a custom username and password. You
 # might also want to apply the <tt>--non-interactive</tt> argument. For
@@ -80,6 +90,10 @@ $:.unshift File.dirname(__FILE__)
 # testing purposes.
 module Subtrigger
   attr_accessor :svn, :sendmail, :svn_args
+
+  def configure(&block)
+    yield self and return self
+  end
 
   # Output the version number for this gem by reading /VERSION
   def version

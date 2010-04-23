@@ -10,6 +10,15 @@ class TestSubtrigger < Test::Unit::TestCase
       assert_match(/\d+\.\d+\.\d+/, Subtrigger.version)
     end
 
+    should 'configure with a block' do
+      assert_nil Subtrigger.svn
+      output = Subtrigger.configure do |c|
+        c.svn = 'foo'
+      end
+      assert_equal('foo', Subtrigger.svn)
+      assert_equal(Subtrigger, output)
+    end
+
     should 'Create new Repository object' do
       Subtrigger::Repository.expects(:new).with('foo', '1')
       Subtrigger.run('foo', '1')
