@@ -69,7 +69,10 @@ module Subtrigger
     #
     # Then committing to <tt>group1/project3/trunk</tt> will yield both
     # <tt>group1/project3/trunk</tt> and <tt>project3</tt>.
+    #
+    # The list of changed project names is returned as an array.
     def changed_projects #:yields: full_path, project_path
+      projects = []
       (@dirs_changed ||= look_at('dirs-changed')).split("\n").each do |dir|
         if dir =~ /([\w\-\.]+)\/(trunk|branches|tags)/
           project_name = $1
@@ -77,9 +80,11 @@ module Subtrigger
           when /^(.*\/trunk)/: $1
           when /^(.*\/(?:tags|branches)\/\w+)/: $1
           end
-          yield top_level_dir, project_name
+          projects << project_name
+          yield top_level_dir, project_name if block_given?
         end
       end
+      projects
     end
 
     # Returns the HEAD revision number (<tt>svnlook youngest</tt>)

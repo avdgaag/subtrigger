@@ -39,6 +39,17 @@ class TestRepository < Test::Unit::TestCase
       @r.author
     end
 
+    should 'return changed project names' do
+      lines = <<-EOS
+www.project1.com/trunk
+www.project2.com/trunk/inc
+sub/www.project2.com/tags/v1
+sub/www.project2.com/tags/v1/test
+EOS
+      @r.expects(:look_at).with('dirs-changed').returns(lines)
+      assert_equal(['www.project1.com', 'www.project2.com', 'www.project2.com', 'www.project2.com'], @r.changed_projects)
+    end
+
     should 'yield changed directories' do
       lines = <<-EOS
 www.project1.com/trunk
