@@ -13,8 +13,6 @@ module Subtrigger
   #             :body => 'Your post-commit hook has just fired').send
   #
   # If +sendmail+ can not be found on your system an exception will be raised.
-  #--
-  # TODO: Use a hash of options rather than plain arguments.
   class Email
     attr_accessor :from, :to, :subject, :body, :development
     attr_reader :sendmail
@@ -31,6 +29,7 @@ module Subtrigger
     end
 
     # Tries to use +sendmail+ to send the message.
+    # The message sent is returned for inspecting purposes.
     def send
       message = header + "\n" + body
       unless development
