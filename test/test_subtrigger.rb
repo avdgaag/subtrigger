@@ -3,6 +3,7 @@ require 'helper'
 class TestSubtrigger < Test::Unit::TestCase
   context 'with a clean slate' do
     setup do
+      Subtrigger.reset
       Subtrigger::Trigger.reset
     end
 

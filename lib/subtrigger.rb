@@ -91,6 +91,12 @@ $:.unshift File.dirname(__FILE__)
 module Subtrigger
   attr_accessor :svn, :sendmail, :svn_args
 
+  def reset
+    self.svn      = nil
+    self.sendmail = nil
+    self.svn_args = nil
+  end
+
   def configure(&block)
     yield self and return self
   end
