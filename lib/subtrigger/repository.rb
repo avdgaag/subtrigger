@@ -78,7 +78,7 @@ module Subtrigger
           project_name = $1
           top_level_dir = case dir
           when /^(.*\/trunk)/: $1
-          when /^(.*\/(?:tags|branches)\/\w+)/: $1
+          when /^(.*\/(?:tags|branches)\/[\w\-]+)/: $1
           end
           projects << project_name
           yield top_level_dir, project_name if block_given?

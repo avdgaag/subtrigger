@@ -42,7 +42,7 @@ class TestRepository < Test::Unit::TestCase
     should 'return changed project names' do
       lines = <<-EOS
 www.project1.com/trunk
-www.project2.com/trunk/inc
+www.project2.com/branches/FB-feature
 sub/www.project2.com/tags/v1
 sub/www.project2.com/tags/v1/test
 EOS
@@ -53,14 +53,14 @@ EOS
     should 'yield changed directories' do
       lines = <<-EOS
 www.project1.com/trunk
-www.project2.com/trunk/inc
+www.project2.com/branches/FB-feature
 sub/www.project2.com/tags/v1
 sub/www.project2.com/tags/v1/test
 EOS
       @r.expects(:look_at).with('dirs-changed').returns(lines)
       yieldings = [
         ['www.project1.com/trunk', 'www.project1.com'],
-        ['www.project2.com/trunk', 'www.project2.com'],
+        ['www.project2.com/branches/FB-feature', 'www.project2.com'],
         ['sub/www.project2.com/tags/v1', 'www.project2.com'],
         ['sub/www.project2.com/tags/v1', 'www.project2.com']
       ]
