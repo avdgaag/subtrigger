@@ -7,7 +7,8 @@ module Subtrigger
       Rule.new(*args, &block)
     end
 
-    # Create and deliver a new Mail object using Pony
+    # Create and deliver a new Mail object using Pony. See its documentation
+    # for more information.
     def mail(*args)
       ::Pony.mail(*args)
     end
