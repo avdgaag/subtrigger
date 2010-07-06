@@ -16,7 +16,10 @@ end
 
 on /De(s|k)cr(.+)/ do |r, matches|
   puts 'Rule 3: ' + matches.inspect
-  mail 'from', 'to', 'subject', template('template 1', matches[:message][1])
+  mail  :from    => 'foo',
+        :to      => 'bar',
+        :subject => 'subject',
+        :body    => template('template 1', matches[:message][1])
 end
 __END__
 @@ template 1
