@@ -2,7 +2,6 @@ require 'lib/subtrigger/dsl'
 require 'lib/subtrigger/revision'
 require 'lib/subtrigger/rule'
 require 'lib/subtrigger/template'
-require 'lib/subtrigger/mail'
 
 module Subtrigger
 
