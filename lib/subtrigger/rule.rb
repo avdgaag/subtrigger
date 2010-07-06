@@ -1,4 +1,4 @@
-module Subtrigger
+ module Subtrigger
   # = Rule
   #
   # A rule object knows when to fire some kind of action for some kind of
@@ -29,11 +29,11 @@ module Subtrigger
     # instance of Revision.
     CannotCompare = Class.new(Exception)
 
-    # The pattern for this rule to match against a Revision#message
-    attr_reader :pattern
-
     # A hash of Revision attributes and regular expressions to match against
-    attr_reader :options
+    attr_reader :criteria
+
+    # The callback to run on a match
+    attr_reader :block
 
   private
 
@@ -58,20 +58,40 @@ module Subtrigger
     end
 
     # Create a new Rule object with criteria for different properties of a
-    # Revision. The required block
+    # Revision. The required block defines the callback to run. It will have
+    # the current Revision object yielded to it.
     #
-    # @param [Regex] pattern is the criterium for the log message.
-    # @param [Hash] options defines additional criteria.
-    # @yield [revision] the code the run when this rule matches
-    # @yieldparam [Revision] revision is the currently matches Revision
-    # @option options [Regex] :author  Criterium for Revision#author
-    # @option options [Regex] :date    Criterium for Revision#date
-    # @option options [Regex] :number  Criterium for Revision#number
-    # @option options [Regex] :project Criterium for Revision#project
-    def initialize(pattern, options = {}, &block)
-      @pattern, @options = pattern, options
-      self.define_method(:run, block)
-      self.register self
+    # Criteria are Ruby objects that should match (`===`) a Revision's
+    # attributes. These would usually be regular expressions, but they
+    # can be strings or custom objects if you want to.
+    #
+    # @overload initialize(pattern, &block)
+    #   Define a rule with a pattern matching the log message
+    #   @param [Regex] pattern is the regular expression to match against
+    #     the revision's log message
+    #   @yield [revision] the code the run when this rule matches
+    #   @yieldparam [Revision] revision is the currently matches Revision
+    # @overload initialize(options, &block)
+    #   Define a rule with various criteria in a hash.
+    #   @param [Hash] options defines matching criteria.
+    #   @option options :author  Criterium for Revision#author
+    #   @option options :date    Criterium for Revision#date
+    #   @option options :number  Criterium for Revision#number
+    #   @option options :project Criterium for Revision#project
+    #   @yield [revision] the code the run when this rule matches
+    #   @yieldparam [Revision] revision is the currently matches Revision
+    def initialize(pattern_or_options, &block)
+      # If not given a hash, we build a hash defaulting on message
+      unless pattern_or_options.is_a?(Hash)
+        pattern_or_options = { :message => pattern_or_options }
+      end
+      @criteria, @block = pattern_or_options, block
+      self.class.register self
+    end
+
+    # Call this Rule's callback method with the give Revision object.
+    def run(rev)
+      block.call(rev)
     end
 
     def ===(other) #:nodoc:
@@ -88,8 +108,11 @@ module Subtrigger
     # @raise Subtrigger::Rule::CannotCompare when comparing to something other
     #   than a revision.
     def matches?(revision)
-      pattern =~ revision.message
-      
+      match = true
+      criteria.each_pair do |key, value|
+        match &= (value === revision.send(key.to_sym))
+      end
+      match
     end
   end
 end

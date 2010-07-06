@@ -1,3 +1,4 @@
+require 'time'
 module Subtrigger
   # = Revision
   #
@@ -27,7 +28,7 @@ module Subtrigger
   #
   # @example Usage
   #   @revision = Revision.new('...')
-  #   @revision.author # => 'bram'
+  #   @revision.author # => 'john'
   #   @revision.message # => 'Description of log'
   #   @revision.date # => (instance of Time)
   #
@@ -45,6 +46,7 @@ module Subtrigger
 
     def initialize(svn_output) #:nodoc:
       @raw = svn_output
+      @attributes = {}
       parse
     end
 
@@ -59,7 +61,11 @@ module Subtrigger
     # Parses the raw log of svnlook into a Hash of attributes.
     # @todo parse the log info here and raise exception when it doesn't compute
     def parse
-
+      number, author, timestamp, size, message = raw.split("\n", 5)
+      attributes[:number] = number.to_i
+      attributes[:author] = author
+      attributes[:timestamp] = Time.parse(timestamp)
+      attributes[:message] = message
     end
   end
 end

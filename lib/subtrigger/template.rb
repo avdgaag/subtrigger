@@ -51,7 +51,11 @@ module Subtrigger
     def self.find(name)
       @children.find { |child|
         child.name == name
-      }.content
+      }
+    end
+
+    def to_s
+      string
     end
 
     def initialize(name, string) #:nodoc:

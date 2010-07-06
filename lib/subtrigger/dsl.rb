@@ -20,5 +20,6 @@ module Subtrigger
     def svn(*args)
 
     end
+
   end
 end
