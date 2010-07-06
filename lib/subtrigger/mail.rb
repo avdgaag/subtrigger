@@ -51,12 +51,3 @@ EOS
     end
   end
 end
-
-if $0 == __FILE__
-  puts Subtrigger::Mail.new('foo', 'bar', 'baz', 'qux').inspect
-  x = Subtrigger::Mail.new do
-    to 'foo'
-    from 'bar'
-  end
-  puts x.inspect
-end
