@@ -44,7 +44,7 @@ module Subtrigger
     # the parsed Hash of attributes for this revision
     attr_reader :attributes
 
-    def initialize(svn_output) #:nodoc:
+    def initialize(svn_output)
       @raw = svn_output
       @attributes = {}
       parse

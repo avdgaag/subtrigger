@@ -11,15 +11,18 @@ module Subtrigger
     #
     # @todo implement
     def mail(from, to, message)
-
+      puts "Sending mail from #{from} to #{to} with #{message}"
     end
 
     # Call Subversion commands using the configured svn executable.
     #
     # @todo implement
     def svn(*args)
-
+      puts "Calling 'svn #{[*args].join(' ')}'"
     end
 
+    def template(name, *format_arguments)
+      Template.find(name).to_s % [*format_arguments]
+    end
   end
 end

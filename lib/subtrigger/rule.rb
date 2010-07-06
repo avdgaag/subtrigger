@@ -1,6 +1,4 @@
  module Subtrigger
-  # = Rule
-  #
   # A rule object knows when to fire some kind of action for some kind of
   # revision. When the Subversion hook is fired, a Rule can inspect it and
   # choose whether or not to fire its trigger (a piece code defined by the
@@ -69,8 +67,6 @@
     #   Define a rule with a pattern matching the log message
     #   @param [Regex] pattern is the regular expression to match against
     #     the revision's log message
-    #   @yield [revision] the code the run when this rule matches
-    #   @yieldparam [Revision] revision is the currently matches Revision
     # @overload initialize(options, &block)
     #   Define a rule with various criteria in a hash.
     #   @param [Hash] options defines matching criteria.
@@ -78,8 +74,6 @@
     #   @option options :date    Criterium for Revision#date
     #   @option options :number  Criterium for Revision#number
     #   @option options :project Criterium for Revision#project
-    #   @yield [revision] the code the run when this rule matches
-    #   @yieldparam [Revision] revision is the currently matches Revision
     def initialize(pattern_or_options, &block)
       # If not given a hash, we build a hash defaulting on message
       unless pattern_or_options.is_a?(Hash)
@@ -91,7 +85,8 @@
 
     # Call this Rule's callback method with the give Revision object.
     def run(rev)
-      block.call(rev)
+      @rev = rev
+      block.call(@rev, collect_captures)
     end
 
     def ===(other) #:nodoc:
@@ -108,11 +103,26 @@
     # @raise Subtrigger::Rule::CannotCompare when comparing to something other
     #   than a revision.
     def matches?(revision)
+      raise CannotCompare unless revision.is_a?(Revision)
       match = true
       criteria.each_pair do |key, value|
-        match &= (value === revision.send(key.to_sym))
+        if key == :all
+          value === revision
+        else
+          match &= (value === revision.send(key.to_sym))
+        end
       end
       match
+    end
+
+  private
+
+    def collect_captures
+      criteria.inject({}) do |output, (key, value)|
+        next if key == :all
+        output[key] = @rev.send(key.to_sym).scan(value).flatten if value.is_a?(Regexp)
+        output
+      end
     end
   end
 end
