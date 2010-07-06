@@ -2,13 +2,14 @@ require 'lib/subtrigger/dsl'
 require 'lib/subtrigger/revision'
 require 'lib/subtrigger/rule'
 require 'lib/subtrigger/template'
+require 'lib/subtrigger/mail'
 
 module Subtrigger
 
   # A list of absolute paths on te filesystems to where the svn executables
   # might be located. These are scanned in order to find the svn executable
   # to use.
-  POSSIBLE_PATHS_TO_SVN = %w{/opt/subversion/bin /usr/bin}
+  POSSIBLE_PATHS = %w{/opt/subversion/bin /usr/sbin /usr/bin}
 
   # Standard exception for all Subtrigger exceptions
   Exception = Class.new(Exception)
@@ -30,12 +31,16 @@ module Subtrigger
   # @return nil
   def run(repository_path, revision_number)
     Template.parse(DATA.read)
-    rev = Revision.new(revision_number + "\n" + svnlook('info', repository_path))
+    rev = Revision.new(
+      revision_number,
+      svnlook('info', repository_path),
+      svnlook('dirs-changed', repository_path)
+    )
     Rule.matching(rev).each { |r| r.run(rev) }
   end
 
   # Make a system call to <tt>svn</tt> with the given arguments. The
-  # executable that used is the first found in <tt>POSSIBLE_PATHS_TO_SVN</tt>.
+  # executable that used is the first found in <tt>POSSIBLE_PATHS</tt>.
   #
   # @example Using multiple arguments
   #   svn 'update', 'foo', '--ignore-externals'
@@ -47,7 +52,7 @@ module Subtrigger
 
   # Make a system call to <tt>svnlook</tt> with the given arguments. The
   # executable # that used is the first found in
-  # <tt>POSSIBLE_PATHS_TO_SVN</tt>.
+  # <tt>POSSIBLE_PATHS</tt>.
   #
   # @example Using multiple arguments
   #   svnlook 'youngest', '/path/to/repo'
@@ -55,7 +60,19 @@ module Subtrigger
   # @return [String] output from the command
   def svnlook(*args)
     `svnlook #{[*args].join(' ')}`
-    "bram\n2010-07-05 17:00:00 +0200 (Mon, 01 Jan 2010)\n215\nDescription of log"
+    return "bram\n2010-07-05 17:00:00 +0200 (Mon, 01 Jan 2010)\n215\nDescription of log" if [*args].first == 'info'
+    return "/project1/trunk\n/project1/branches/rewrite\n" if [*args].first == 'dirs-changed'
+  end
+
+  # Find the correct path to the svn executable. We look at the list of
+  # possible locations in <tt>POSSIBLE_PATHS_TO_SVN</tt> see where an
+  # executable file exists.
+  #
+  # Note: this probably only works on unix-like systems.
+  #
+  # @todo: implement memoization per argument
+  def path_to(program)
+    POSSIBLE_PATHS.find { |path| system('test -x' + path + '/' + program) }
   end
 
 private
@@ -64,17 +81,7 @@ private
   # @todo: maybe build a check to only prefix the path when actually calling
   #  svn or svnlook or something.
   def `(arg)
-    # super(path_to_bin + '/' + arg)
-    puts path_to_bin + '/' + arg
-  end
-
-  # Find the correct path to the svn executable. We look at the list of
-  # possible locations in <tt>POSSIBLE_PATHS_TO_SVN</tt> see where an
-  # executable file exists.
-  #
-  # Note: this probably only works on unix-like systems.
-  def path_to_bin
-    @correct_path ||= POSSIBLE_PATHS_TO_SVN.find { |path| system('test -x' + path + '/svn') }
+    # super(path_to('svn') + '/' + arg)
   end
 
   extend self

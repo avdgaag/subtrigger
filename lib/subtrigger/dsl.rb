@@ -9,18 +9,24 @@ module Subtrigger
 
     # Create and deliver a new Mail object
     #
-    # @todo implement
-    def mail(from, to, message)
-      puts "Sending mail from #{from} to #{to} with #{message}"
+    # @see Subtrigger::Mail#initialize
+    def mail(*args, &block)
+      Mail.new(*args, &block).deliver
     end
 
     # Call Subversion commands using the configured svn executable.
     #
-    # @todo implement
+    # @see Subtrigger#svn
     def svn(*args)
-      puts "Calling 'svn #{[*args].join(' ')}'"
+      Subtrigger.svn(*args)
     end
 
+    # Get the contents of a template defined inline, and interpolate any given
+    # arguments into it.
+    #
+    # @example Getting a template and using interpolation
+    #   template 'email'          # => 'Dear %s...'
+    #   template 'email', 'John'  # => Dear John...'
     def template(name, *format_arguments)
       Template.find(name).to_s % [*format_arguments]
     end

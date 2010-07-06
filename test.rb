@@ -11,12 +11,12 @@ on /Description/ do
 end
 
 on :all => BramMatcher.new do |r, m|
-  puts 'Rule 2: ' + r.message
+  puts 'Rule 2: ' + r.projects.join(', ')
 end
 
 on /De(s|k)cr(.+)/ do |r, matches|
   puts 'Rule 3: ' + matches.inspect
-  mail 'from', 'to', template('template 1', matches[:message][1])
+  mail 'from', 'to', 'subject', template('template 1', matches[:message][1])
 end
 __END__
 @@ template 1

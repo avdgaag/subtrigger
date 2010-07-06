@@ -41,12 +41,16 @@ module Subtrigger
     # The raw output of the svnlook command.
     attr_reader :raw
 
+    # A list of all directories that were changed in this revision
+    attr_reader :dirs_changed
+
     # the parsed Hash of attributes for this revision
     attr_reader :attributes
 
-    def initialize(svn_output)
-      @raw = svn_output
-      @attributes = {}
+    def initialize(revision_number, info, dirs_changed)
+      @attributes = { :number => revision_number.to_i }
+      @raw = info
+      @dirs_changed = dirs_changed.split
       parse
     end
 
@@ -56,13 +60,27 @@ module Subtrigger
       end
     end
 
+    # Creates a list of directory paths in the repository that have changes
+    # and contain a <tt>trunk</tt>, <tt>branches</tt> or <tt>tags</tt>
+    # directory.
+    #
+    # For example, a changed path in like <tt>/topdir/project_name/trunk</tt>
+    # would result in <tt>/topdir/project_name</tt>.
+    #
+    # @return [Array] list of changed project paths
+    def projects
+      pattern = /\/(trunk|branches|tags)/
+      dirs_changed.grep(pattern).map do |dir|
+        dir.split(pattern, 2).first
+      end.uniq
+    end
+
   private
 
     # Parses the raw log of svnlook into a Hash of attributes.
     # @todo parse the log info here and raise exception when it doesn't compute
     def parse
-      number, author, timestamp, size, message = raw.split("\n", 5)
-      attributes[:number] = number.to_i
+      author, timestamp, size, message = raw.split("\n", 4)
       attributes[:author] = author
       attributes[:timestamp] = Time.parse(timestamp)
       attributes[:message] = message
