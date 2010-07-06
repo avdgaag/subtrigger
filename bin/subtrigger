@@ -1,9 +1,0 @@
-#!/usr/local/bin/ruby
-$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
-require 'subtrigger'
-
-if ARGV.size == 1 && ARGV.first =~ /-v|--version/
-  puts Subtrigger.version
-else
-  Subtrigger.run(*ARGV)
-end
