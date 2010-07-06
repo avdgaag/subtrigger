@@ -7,11 +7,9 @@ module Subtrigger
       Rule.new(*args, &block)
     end
 
-    # Create and deliver a new Mail object
-    #
-    # @see Subtrigger::Mail#initialize
-    def mail(*args, &block)
-      Mail.new(*args, &block).deliver
+    # Create and deliver a new Mail object using Pony
+    def mail(*args)
+      ::Pony.mail(*args)
     end
 
     # Call Subversion commands using the configured svn executable.

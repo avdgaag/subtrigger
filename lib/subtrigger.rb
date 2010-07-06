@@ -1,3 +1,12 @@
+# Libraries
+begin
+  require 'pony'
+rescue LoadError
+  puts 'WARNING: Subtrigger requires Pony to send e-mails.'
+end
+require 'time'
+
+# Load internals
 require 'lib/subtrigger/dsl'
 require 'lib/subtrigger/revision'
 require 'lib/subtrigger/rule'

@@ -12,6 +12,7 @@ begin
     gem.authors = ["Arjan van der Gaag"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     gem.add_development_dependency "mocha", ">= 0"
+    gem.add_dependency 'pony'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
