@@ -11,13 +11,9 @@ require 'lib/subtrigger/dsl'
 require 'lib/subtrigger/revision'
 require 'lib/subtrigger/rule'
 require 'lib/subtrigger/template'
+require 'lib/subtrigger/path'
 
 module Subtrigger
-
-  # A list of absolute paths on te filesystems to where the svn executables
-  # might be located. These are scanned in order to find the svn executable
-  # to use.
-  POSSIBLE_PATHS = %w{/opt/subversion/bin /usr/sbin /usr/bin}
 
   # Standard exception for all Subtrigger exceptions
   Exception = Class.new(Exception)
@@ -72,15 +68,11 @@ module Subtrigger
     return "/project1/trunk\n/project1/branches/rewrite\n" if [*args].first == 'dirs-changed'
   end
 
-  # Find the correct path to the svn executable. We look at the list of
-  # possible locations in <tt>POSSIBLE_PATHS_TO_SVN</tt> see where an
-  # executable file exists.
-  #
-  # Note: this probably only works on unix-like systems.
-  #
-  # @todo: implement memoization per argument
-  def path_to(program)
-    POSSIBLE_PATHS.find { |path| system('test -x' + path + '/' + program) }
+  # The 'global' Path object
+  # @see Path#initialize
+  # @return [Path]
+  def path
+    @path ||= Path.new
   end
 
 private
@@ -89,6 +81,7 @@ private
   # @todo: maybe build a check to only prefix the path when actually calling
   #  svn or svnlook or something.
   def `(arg)
+    puts "Called: " + path.to('svn') + '/' + arg
     # super(path_to('svn') + '/' + arg)
   end
 
