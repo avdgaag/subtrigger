@@ -44,6 +44,4 @@ task :test => :check_dependencies
 task :default => :test
 
 require 'yard'
-YARD::Rake::YardocTask.new do |t|
-  # defaults ...
-end
+YARD::Rake::YardocTask.new

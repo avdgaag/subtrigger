@@ -28,8 +28,6 @@ module Subtrigger
   # when a directory <tt>/internal/accounting/trunk</tt> is changed, the
   # project <tt>/internal/accounting</tt> is reported.
   #
-  # == Examples
-  #
   # @example Example of raw input for <tt>info</tt>
   #   john
   #   2010-07-05 17:00:00 +0200 (Mon, 01 Jan 2010)
@@ -46,9 +44,6 @@ module Subtrigger
   # @author Arjan van der Gaag
   # @since 0.3.0
   class Revision
-    # Raised when the given svn output can not be parsed.
-    InvalidOutput = Class.new(Exception)
-
     # The raw output of the svnlook command.
     attr_reader :raw
 
@@ -78,7 +73,7 @@ module Subtrigger
     # For example, a changed path in like <tt>/topdir/project_name/trunk</tt>
     # would result in <tt>/topdir/project_name</tt>.
     #
-    # @return [Array] list of changed project paths
+    # @return [Array<String>] list of changed project paths
     def projects
       pattern = /\/(trunk|branches|tags)/
       dirs_changed.grep(pattern).map do |dir|

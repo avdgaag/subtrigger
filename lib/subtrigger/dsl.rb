@@ -10,13 +10,15 @@ module Subtrigger
   module Dsl
     # Define a new trigger on incoming Revision.
     #
-    # @see Rule#new
+    # @see Rule#initialize
+    # @return [nil]
     def on(*args, &block)
       Rule.new(*args, &block)
     end
 
     # Create and deliver a new Mail object using Pony. See its documentation
     # for more information.
+    # @return [nil]
     def mail(*args)
       ::Pony.mail(*args)
     end
@@ -24,6 +26,7 @@ module Subtrigger
     # Call Subversion commands using the configured svn executable.
     #
     # @see Subtrigger#svn
+    # @return [String] the command's output
     def svn(*args)
       Subtrigger.svn(*args)
     end
@@ -31,6 +34,7 @@ module Subtrigger
     # Get a template defined inline and format it using the given arguments.
     #
     # @see Template#format
+    # @return [String] the formatted template
     def template(name, *format_arguments)
       Template.find(name).format [*format_arguments]
     end

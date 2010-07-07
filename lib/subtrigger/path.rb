@@ -2,8 +2,8 @@ module Subtrigger
   # Our own little implementation of the path, allowing us to look up
   # the location of executable files. This is because Subversion hooks
   # run in a clean environment, without any environment variables such as
-  # $PATH. We therefore need to run (for example) <tt>/usr/bin/svn update</tt>
-  # rather than <tt>svn update</tt>.
+  # <tt>$PATH</tt>. We therefore need to run (for example)
+  # <tt>/usr/bin/svn update</tt> rather than <tt>svn update</tt>.
   #
   # There is a list of default locations that will be searched, but you
   # may add your own if you want to. This is useful if you've got a custom
@@ -48,7 +48,7 @@ module Subtrigger
     # Add a new path to the stack before the existing ones.
     #
     # @param [String] new_path is a new possible location of executables
-    # @return [Array] the total list of paths
+    # @return [Array<String>] the total list of paths
     def <<(new_path)
       locations.unshift(new_path)
     end
@@ -57,7 +57,7 @@ module Subtrigger
     #
     # Note: this probably only works on unix-like systems.
     #
-    # @todo: implement memoization per argument
+    # @todo implement memoization per argument
     # @param [String] program is the name of the executable to find, like
     #  <tt>svn</tt>
     # @return [String] the correct path to this program or nil

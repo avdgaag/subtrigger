@@ -3,16 +3,16 @@ module Subtrigger
   #
   # When you define string templates at the end of your rules file, this class
   # can parse and keep track of them. You can then easily retrieve them again
-  # and optionally format it like with {String#%}.
+  # and optionally format it like with <tt>String#%</tt>.
   #
-  # You simply define a new template using `@@`, followed by a name and then
-  # the textual contents (see the example below).
+  # You simply define a new template using <tt>@@</tt>, followed by a name and
+  # then the textual contents (see the example below).
   #
   # You can read the templates and use them, for example, in e-mails.
   #
   # @example Defining templates
-  #   # at the end of your Ruby file...
-  #   __END__
+  #   # at the end of your Ruby file:
+  #    __END__
   #   @@ Template 1
   #   Foo
   #   @@ Template 2
@@ -41,13 +41,15 @@ module Subtrigger
     @children = []
 
     # Parse the contents of a string and extract templates from it. These are
-    # tracked so you can use Template#find to retrieve them by name.
+    # tracked so you can use {Template#find} to retrieve them by name.
     #
     # @param [String] the contents of your rules file's <tt>__DATA__.read</tt>
+    # @return [nil]
     def self.parse(string)
       string.split(/^@@ (.*)\n/).map(&:chomp).slice(1..-1).each_slice(2) do |name, content|
         @children << new(name, content)
       end
+      nil
     end
 
     # Finds and returns the content of the template by the given name.
@@ -71,7 +73,7 @@ module Subtrigger
     #
     # @example Getting a template and using interpolation
     #   template.to_s           # => 'Dear %s...'
-    #   template.format 'John'  # => Dear John...'
+    #   template.format 'John'  # => 'Dear John...'
     # @return [String] the formatted template contents
     def format(*args)
       to_s % [*args]

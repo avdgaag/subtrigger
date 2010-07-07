@@ -1,18 +1,92 @@
-= subtrigger
+= Subtrigger
 
-Subtrigger is a tiny tool for firing callback methods based on triggers in subversion log messages. This allows you to send out e-mail notifications after a commit, or take some other action based on keywords in Subversion's log messages.
+A simple DSL for defining callbacks to be fired as Subversion hooks with
+built-in support for inspecting the repository and sending out e-mails.
 
-Here's a quick example:
+== Usage
 
-  # use as post-commit hook in /path/to/repo/hooks
+This library is intended for use as a Subversion post-commit hook. It allows
+you to define callbacks that fire when certain conditions on a revision are
+met. Simply require Subtrigger and define your rules:
+
   require 'subtrigger'
-  Subtrigger.on(/log: (\w+)/) { |matches, repo|
-    puts "#{repo.author} committed #{matches[0]} in revision #{repo.revision}"
-  }.run(*ARGV)
 
-== Documentation
+  on /deploy to (\w+)/ do |revision, matches|
+    puts "Should deploy to #{matches[:message].first}"
+  end
 
-See the inline API documentation for descriptions and usage examples.
+Save this as a file in your Subversion repository, like
+<tt>/path/to/repo/hooks/deploy.rb</tt>. Then in your Subversion commit hook
+file (<tt>/path/to/repo/hooks/post-commit</tt>) simply call the file using
+Ruby:
+
+  /usr/bin/ruby -rubygems /path/to/repo/hooks/deploy.rb "$1" "$2"
+
+== Detailed usage
+
+=== Matchers
+
+The default usage in the example above uses a regular expression which by
+default will be matched against the log message of the revision that
+triggers the hook. But you can test both other attributes and with other
+objects (basically anything that responds to <tt>#===</tt>).
+
+  # Test on author name
+  # You can use <tt>:author</tt>, <tt>:message</tt>, <tt>:date</tt>,
+  # <tt>:number</tt>
+  on :author => /john|graham|michael|terry/ do
+    puts 'Always look on the bright side of life!'
+  end
+
+  # Test using a matcher object
+  class EvenNumberMatcher
+    def ===(revision)
+      revision.number % 2 == 0
+    end
+  end
+  on :number => EvenNumberMatcher.new do
+    puts 'The revision number is an even number'
+  end
+
+=== Sending e-mails
+
+Subtrigger uses Pony to enable the sending of e-mails straigt from your
+triggers. This means you can send an e-mail when a branch is created, just
+to name an example.
+
+  on /confirm via email/ do
+    mail :to      => 'me@example.com',
+         :from    => 'svn@example.com',
+         :subject => 'E-mail confirmation of commit',
+         :body    => 'Your commit has been saved.'
+  end
+
+=== Inline templates
+
+To remove long strings from your templates you can define templates right
+in your rules file.
+
+  on /confirm via email/ do |r|
+    mail :to      => 'me@example.com',
+         :from    => 'svn@example.com',
+         :subject => 'E-mail confirmation of commit',
+         :body    => template('E-mail confirmation', r.number)
+  end
+  __END__
+  @@ E-mail confirmation
+  Your commit (%s) has been saved
+  @@ Other template
+  ...
+
+This will result in an e-mail like <tt>Your commit (5299) has been
+saved</tt>.
+
+== Warnings
+
+Note that subversion calls its hooks in an empty environment, so there's
+no $PATH or anything. Always use full absolute paths. Also, hooks are
+notoriously hard to debug, so make sure to write some debugging information
+somewhere so you know what is going on.
 
 == Credits
 
@@ -32,7 +106,7 @@ Source:: http://github.com/avdgaag/subtrigger
   commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
-== Copyright
+== License
 
 Copyright (c) 2010 Arjan van der Gaag
 

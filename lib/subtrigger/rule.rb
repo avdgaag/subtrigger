@@ -1,4 +1,4 @@
- module Subtrigger
+module Subtrigger
   # A <tt>Rule</tt> object knows when to fire some kind of action for some
   # kind of revision. When the Subversion hook is fired, a Rule can inspect it
   # and choose whether or not to fire its trigger (a piece code defined by the
@@ -38,7 +38,7 @@
     # Keep track of Rule objects that are created in a class instance variable
     #
     # @param [Rule] child is the new Rule object
-    # @return [Array] the total list of children
+    # @return [Array<Rule>] the total list of children
     def self.register(child)
       @rules << child
     end
@@ -49,7 +49,7 @@
     # revision.
     #
     # @param [Revision] revision is the revision to compare rules to.
-    # @return [Array] list of all matching rules
+    # @return [Array<Rule>] list of all matching rules
     def self.matching(revision)
       @rules.select { |child| child === revision }
     end
@@ -93,6 +93,7 @@
     # <tt>Revision</tt>.
     #
     # @param [Object] the object to compare to
+    # @return [Boolean]
     # @see Rule#matches?
     def ===(other)
       other.kind_of?(Revision) ? matches?(other) : super
