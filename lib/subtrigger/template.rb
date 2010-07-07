@@ -1,10 +1,14 @@
 module Subtrigger
-  # = Template
-  #
   # Reads, parses and manages inline templates.
   #
   # When you define string templates at the end of your rules file, this class
-  # can parse and keep track of them.
+  # can parse and keep track of them. You can then easily retrieve them again
+  # and optionally format it like with {String#%}.
+  #
+  # You simply define a new template using `@@`, followed by a name and then
+  # the textual contents (see the example below).
+  #
+  # You can read the templates and use them, for example, in e-mails.
   #
   # @example Defining templates
   #   # at the end of your Ruby file...
@@ -12,15 +16,17 @@ module Subtrigger
   #   @@ Template 1
   #   Foo
   #   @@ Template 2
+  #   Hello, %s!
   #
-  # You simply define a new template using `@@`, followed by a name and then
-  # the textual contents.
-  #
-  # You can read the templates and use them, for example, in e-mails.
+  # @example Parsing templates
+  #   Template.parse(__DATA__.read)
   #
   # @example Using templates
-  #   Template.parse(__DATA__.read)
   #   Template.find('Template 1') # => 'Foo'
+  #
+  # @example Formatting templates
+  #   Template.find('Template 2') # => 'Hello, %s!'
+  #   Template.find('Template 2').format('world') # => 'Hello, world!'
   #
   # @author Arjan van der Gaag
   # @since 0.3.0
@@ -54,11 +60,26 @@ module Subtrigger
       }
     end
 
+    # Convert to string using the textual contents of the template
+    # @return [String]
     def to_s
       string
     end
 
-    def initialize(name, string) #:nodoc:
+    # Get the contents of the template and interpolate any given
+    # arguments into it.
+    #
+    # @example Getting a template and using interpolation
+    #   template.to_s           # => 'Dear %s...'
+    #   template.format 'John'  # => Dear John...'
+    # @return [String] the formatted template contents
+    def format(*args)
+      to_s % [*args]
+    end
+
+    # @param [String] name is the unique identifier of a template
+    # @param [String] string is the contents of the template.
+    def initialize(name, string)
       @name, @string = name, string
     end
   end

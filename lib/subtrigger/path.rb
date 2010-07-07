@@ -28,6 +28,10 @@ module Subtrigger
     # The default list of paths to look in, covering most of the use cases.
     DEFAULT_PATHS = %w{/opt/subversion/bin /usr/sbin /usr/bin}
 
+    # Custom exception raised when a program is not found in any of the
+    # locations known.
+    NotFound = Class.new(Exception)
+
     # A list of absolute paths on te filesystems to where the svn executables
     # might be located. These are scanned in order to find the executables
     # to use.
@@ -56,7 +60,9 @@ module Subtrigger
     # @todo: implement memoization per argument
     # @param [String] program is the name of the executable to find, like
     #  <tt>svn</tt>
-    # @return [String, nil] the correct path to this program or nil
+    # @return [String] the correct path to this program or nil
+    # @raise NotFoundException when the program is not found in any of the
+    #  known locations
     def to(program)
       locations.find { |path| exists? File.join(path, program) }
     end

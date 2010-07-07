@@ -1,23 +1,21 @@
  module Subtrigger
-  # A rule object knows when to fire some kind of action for some kind of
-  # revision. When the Subversion hook is fired, a Rule can inspect it and
-  # choose whether or not to fire its trigger (a piece code defined by the
+  # A <tt>Rule</tt> object knows when to fire some kind of action for some
+  # kind of revision. When the Subversion hook is fired, a Rule can inspect it
+  # and choose whether or not to fire its trigger (a piece code defined by the
   # user).
   #
-  # == Examples
+  # In the first example, the rule will output <tt>fired</tt> whenever a
+  # <tt>Revision</tt> comes along with a message containing <tt>foo</tt>.
   #
-  # @example Define a simple Rule
+  # In the second example, we find all applicable rules for a given
+  # <tt>Revision</tt> object. We can then run each of them.
+  #
+  # @example 1: Define a simple Rule
   #   Rule.new(/foo/) { puts 'fired' }
   #
-  # In the above example, this rule will output 'fired' whenever a Revision
-  # comes along with a message containing 'foo'.
-  #
-  # @example Finding and firing Rules
+  # @example 2: Finding and firing Rules
   #   rev = Revision.new
   #   Rule.matching(rev).map { |rule| rule.run(rev) }
-  #
-  # In this example, we find all applicable rules for a given Revision object.
-  # We can then run every single on of them.
   #
   # @since 0.3.0
   # @author Arjan van der Gaag
@@ -40,6 +38,7 @@
     # Keep track of Rule objects that are created in a class instance variable
     #
     # @param [Rule] child is the new Rule object
+    # @return [Array] the total list of children
     def self.register(child)
       @rules << child
     end
@@ -84,22 +83,26 @@
     end
 
     # Call this Rule's callback method with the give Revision object.
+    # @return [nil]
     def run(rev)
       @rev = rev
       block.call(@rev, collect_captures)
     end
 
-    def ===(other) #:nodoc:
-      if other.kind_of? Revision
-        matches? other
-      end
+    # Use {Rule#matches?} to see if this <tt>Rule</tt> matches the given
+    # <tt>Revision</tt>.
+    #
+    # @param [Object] the object to compare to
+    # @see Rule#matches?
+    def ===(other)
+      other.kind_of?(Revision) ? matches?(other) : super
     end
 
     # See if the current rule matches a given subversion revision.
     #
     # @param [Revision] revision the Revision object to compare to.
     # @return [Boolean]
-    # @see #===
+    # @see Rule#===
     # @raise Subtrigger::Rule::CannotCompare when comparing to something other
     #   than a revision.
     def matches?(revision)
@@ -117,6 +120,18 @@
 
   private
 
+    # When using regular expressions to match against string values, we
+    # want to be able to get to any captured groups. This method scans all
+    # string values with their Regex matchers and collects all captured
+    # groups into a namespaced hash.
+    #
+    # @example
+    #   Rule.new /hello, (.+)!/ do |revision, matches|
+    #     puts matches.inspect
+    #   end
+    #   # => { :message => ['world'] }
+    #
+    # @return [Hash] all captured groups per Revision attribute tested
     def collect_captures
       criteria.inject({}) do |output, (key, value)|
         next if key == :all

@@ -1,35 +1,47 @@
 module Subtrigger
-  # = Revision
-  #
-  # A simple wrapper around the output of Subversion's `svnlook` command.
+  # A simple wrapper around the output of Subversion's <tt>svnlook</tt>
+  # command.
   #
   # This class will let you make simple queries against the properties of a
   # Subversion revision. It parses its output into keys and values so you can
   # perform operations on them.
   #
-  # @example Example raw input
-  #   6000
-  #   bram
-  #   2010-07-05 17:00:00 +0200 (Mon, 01 Jan 2010)
-  #   215
-  #   Description of log
+  # == Attributes
   #
-  # That is the following attributes on each line:
+  # It knows about the following attributes:
   #
   # * Revision number
   # * Author
   # * Timestamp
-  # * Log message size
   # * Log message
+  # * changed directories
   #
-  # This is almost the same as the output of `svnlook info`, with the only
-  # difference that the output of `svnlook youngest` is prepended.
+  # This works by passing in the number of the revision to use, the raw
+  # output of <tt>svnlook info</tt> and the raw output of
+  # <tt>svnlook dirs-changed</tt>.
+  #
+  # == Special attributes
+  #
+  # Revision knows about changed projects. This is extracted from the list
+  # of changed directories. A project is a directory that is directly above
+  # a directory named <tt>trunk</tt>, <tt>branches</tt> or <tt>tags</tt>. So
+  # when a directory <tt>/internal/accounting/trunk</tt> is changed, the
+  # project <tt>/internal/accounting</tt> is reported.
+  #
+  # == Examples
+  #
+  # @example Example of raw input for <tt>info</tt>
+  #   john
+  #   2010-07-05 17:00:00 +0200 (Mon, 01 Jan 2010)
+  #   215
+  #   Description of log
   #
   # @example Usage
   #   @revision = Revision.new('...')
-  #   @revision.author # => 'john'
-  #   @revision.message # => 'Description of log'
-  #   @revision.date # => (instance of Time)
+  #   @revision.author    # => 'john'
+  #   @revision.message   # => 'Description of log'
+  #   @revision.date      # => (instance of Time)
+  #   @revision.projects  # => ['/project1', 'project2', ...]
   #
   # @author Arjan van der Gaag
   # @since 0.3.0

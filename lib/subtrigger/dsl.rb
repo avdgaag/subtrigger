@@ -1,4 +1,12 @@
 module Subtrigger
+  # The Dsl module provides some nice-looking methods that can be used to
+  # perform the most important Subtrigger operations.
+  #
+  # This is intended to be included in the top-level namespace, so a script
+  # can call these functions directly.
+  #
+  # @author Arjan van der Gaag
+  # @since 0.3.0
   module Dsl
     # Define a new trigger on incoming Revision.
     #
@@ -20,14 +28,11 @@ module Subtrigger
       Subtrigger.svn(*args)
     end
 
-    # Get the contents of a template defined inline, and interpolate any given
-    # arguments into it.
+    # Get a template defined inline and format it using the given arguments.
     #
-    # @example Getting a template and using interpolation
-    #   template 'email'          # => 'Dear %s...'
-    #   template 'email', 'John'  # => Dear John...'
+    # @see Template#format
     def template(name, *format_arguments)
-      Template.find(name).to_s % [*format_arguments]
+      Template.find(name).format [*format_arguments]
     end
   end
 end
