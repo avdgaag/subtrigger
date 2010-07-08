@@ -95,6 +95,8 @@ include Subtrigger::Dsl
 
 # At the end of the rules file perfrom the actual {Subtrigger#run}
 at_exit do
-  raise ArgumentError unless ARGV.size == 2
-  Subtrigger.run(*ARGV)
+  unless $prevent_subtrigger_run
+    raise ArgumentError unless ARGV.size == 2
+    Subtrigger.run(*ARGV)
+  end
 end

@@ -40,7 +40,7 @@ module Subtrigger
     # Start a new list of paths, starting with the <tt>DEFAULT_PATHS</tt>
     def initialize
       @locations = DEFAULT_PATHS
-      @exists ||= Hash.new do |hash, p|
+      @exists = Hash.new do |hash, p|
         hash[p] = system('test -x ' + p)
       end
     end
@@ -50,7 +50,7 @@ module Subtrigger
     # @param [String] new_path is a new possible location of executables
     # @return [Array<String>] the total list of paths
     def <<(new_path)
-      locations.unshift(new_path)
+      @locations.unshift(new_path)
     end
 
     # Scan all the known paths to find the given program.
@@ -64,7 +64,9 @@ module Subtrigger
     # @raise NotFoundException when the program is not found in any of the
     #  known locations
     def to(program)
-      locations.find { |path| exists? File.join(path, program) }
+      location = locations.find { |path| exists? File.join(path, program) }
+      raise NotFound.new(program) unless location
+      location
     end
 
   private
