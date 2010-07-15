@@ -40,13 +40,21 @@ module Subtrigger
     # List of defined templates the class tracks
     @children = []
 
+    # The pattern that separates one template from another
+    TEMPLATE_DELIMITER = /^@@ (.*)\n/
+
+    # Exception raised when a string cannot be parsed into templates,
+    # because the delimiter cannot be found
+    Unparseable = Class.new(Exception)
+
     # Parse the contents of a string and extract templates from it. These are
     # tracked so you can use {Template#find} to retrieve them by name.
     #
     # @param [String] the contents of your rules file's <tt>__DATA__.read</tt>
     # @return [nil]
     def self.parse(string)
-      string.split(/^@@ (.*)\n/).map(&:chomp).slice(1..-1).each_slice(2) do |name, content|
+      raise Unparseable, "Could not split into templates: #{string.inspect}" unless string =~ TEMPLATE_DELIMITER
+      string.split(TEMPLATE_DELIMITER).map(&:chomp).slice(1..-1).each_slice(2) do |name, content|
         @children << new(name, content)
       end
       nil
