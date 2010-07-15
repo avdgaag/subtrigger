@@ -34,6 +34,18 @@ class TestPath < Test::Unit::TestCase
   end
 
   def test_should_memoize_lookup
+    i = 0
+    stub_system { |c| i += 1; c = /usr\/bin/ }
+    @path.to('foo')
+    @path.to('foo')
+    assert_equal(1, i)
+  end
 
+  def test_should_memoize_lookup_per_argument
+    i = 0
+    stub_system { |c| i += 1; c = /usr\/bin/ }
+    @path.to('foo')
+    @path.to('bar')
+    assert_equal(2, i)
   end
 end

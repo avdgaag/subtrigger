@@ -39,7 +39,7 @@ module Subtrigger
 
     # Start a new list of paths, starting with the <tt>DEFAULT_PATHS</tt>
     def initialize
-      @locations = DEFAULT_PATHS
+      @locations = DEFAULT_PATHS.dup # use a copy to prevent global state
       @exists = Hash.new do |hash, p|
         hash[p] = system('test -x ' + p)
       end
