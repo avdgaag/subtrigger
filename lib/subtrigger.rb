@@ -62,11 +62,8 @@ module Subtrigger
   #   svnlook 'youngest', '/path/to/repo'
   #   # => '/usr/bin/svnlook youngest /path/to/repo
   # @return [String] output from the command
-  # @todo unstub by removing return statements
   def svnlook(*args)
     `svnlook #{[*args].join(' ')}`
-    return "bram\n2010-07-05 17:00:00 +0200 (Mon, 01 Jan 2010)\n215\nDescription of log" if [*args].first == 'info'
-    return "/project1/trunk\n/project1/branches/rewrite\n" if [*args].first == 'dirs-changed'
   end
 
   # @see Path#initialize
@@ -83,8 +80,7 @@ private
   # @todo maybe build a check to only prefix the path when actually calling
   #  svn or svnlook or something.
   def `(arg)
-    puts "Called: " + path.to('svn') + '/' + arg
-    # super(path_to('svn') + '/' + arg)
+    super(path_to('svn') + '/' + arg)
   end
 
   extend self
