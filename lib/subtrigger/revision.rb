@@ -88,8 +88,8 @@ module Subtrigger
     def parse
       author, timestamp, size, message = raw.split("\n", 4)
       attributes[:author] = author
-      attributes[:timestamp] = Time.parse(timestamp)
-      attributes[:message] = message
+      attributes[:date] = Time.parse(timestamp)
+      attributes[:message] = message.chomp
     end
   end
 end
