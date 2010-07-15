@@ -84,8 +84,8 @@ module Subtrigger
   private
 
     # Parses the raw log of svnlook into a Hash of attributes.
-    # @todo parse the log info here and raise exception when it doesn't compute
     def parse
+      raise ArgumentError, 'Could not parse Subversion info: expected at least 4 lines' if raw.split("\n").size < 4
       author, timestamp, size, message = raw.split("\n", 4)
       attributes[:author] = author
       attributes[:date] = Time.parse(timestamp)

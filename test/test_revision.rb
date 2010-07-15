@@ -34,6 +34,7 @@ class TestRevision < Test::Unit::TestCase
   end
 
   def test_should_raise_when_unparsable
+    assert_raise(ArgumentError) { Subtrigger::Revision.new('6000', "invalid info", '') }
   end
 
   def test_should_return_modified_projects
