@@ -18,7 +18,6 @@ class TestPath < Test::Unit::TestCase
 
   def test_should_find_first_match
     stub_system { true }
-    puts @path.locations
     assert_equal('/opt/subversion/bin', @path.to('foo'))
   end
 

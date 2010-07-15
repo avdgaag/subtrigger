@@ -45,6 +45,20 @@ module Subtrigger
 
   public
 
+    # Return an array of all rules currently defined.
+    #
+    # @return [Array<Rule>]
+    def self.rules
+      @rules
+    end
+
+    # Reset the list of known rules, deleting all currently known rules.
+    #
+    # @return nil
+    def self.reset
+      @rules = []
+    end
+
     # Return an array of all existing Rule objects that match the given
     # revision.
     #
@@ -74,11 +88,15 @@ module Subtrigger
     #   @option options :number  Criterium for Revision#number
     #   @option options :project Criterium for Revision#project
     def initialize(pattern_or_options, &block)
+      raise ArgumentError, 'a Rule requires a block' unless block_given?
+
       # If not given a hash, we build a hash defaulting on message
       unless pattern_or_options.is_a?(Hash)
         pattern_or_options = { :message => pattern_or_options }
       end
+
       @criteria, @block = pattern_or_options, block
+      @criteria.inspect
       self.class.register self
     end
 
@@ -96,7 +114,9 @@ module Subtrigger
     # @return [Boolean]
     # @see Rule#matches?
     def ===(other)
-      other.kind_of?(Revision) ? matches?(other) : super
+      matches?(other)
+    rescue CannotCompare
+      super
     end
 
     # See if the current rule matches a given subversion revision.
@@ -107,11 +127,11 @@ module Subtrigger
     # @raise Subtrigger::Rule::CannotCompare when comparing to something other
     #   than a revision.
     def matches?(revision)
-      raise CannotCompare unless revision.is_a?(Revision)
-      match = true
-      criteria.each_pair do |key, value|
+      raise CannotCompare unless @criteria.keys.all? { |k| k == :all || revision.respond_to?(k) }
+      match = @criteria.any?
+      @criteria.each_pair do |key, value|
         if key == :all
-          value === revision
+          match = (value === revision)
         else
           match &= (value === revision.send(key.to_sym))
         end
@@ -133,6 +153,7 @@ module Subtrigger
     #   # => { :message => ['world'] }
     #
     # @return [Hash] all captured groups per Revision attribute tested
+    # @todo this only passes on capture groups, not the entire match
     def collect_captures
       criteria.inject({}) do |output, (key, value)|
         next if key == :all
