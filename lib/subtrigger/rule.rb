@@ -153,7 +153,7 @@ module Subtrigger
     #   # => { :message => ['world'] }
     #
     # @return [Hash] all captured groups per Revision attribute tested
-    # @todo this only passes on capture groups, not the entire match
+    # @todo this only passes on capture groups, not the entire match ($&)
     def collect_captures
       criteria.inject({}) do |output, (key, value)|
         next if key == :all
