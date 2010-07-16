@@ -1,0 +1,1237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Class: Subtrigger::Rule</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo; 
+    <span class='title'><a href="../Subtrigger.html" title="Subtrigger (module)">Subtrigger</a></span>
+     &raquo; 
+    <span class="title">Rule</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Subtrigger::Rule
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Subtrigger::Rule</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/subtrigger/rule.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+A <tt>Rule</tt> object knows when to fire some kind of action for some kind
+of revision. When the Subversion hook is fired, a Rule can inspect it and
+choose whether or not to fire its trigger (a piece code defined by the
+user).
+</p>
+<p>
+In the first example, the rule will output <tt>fired</tt> whenever a
+<tt>Revision</tt> comes along with a message containing <tt>foo</tt>.
+</p>
+<p>
+In the second example, we find all applicable rules for a given
+<tt>Revision</tt> object. We can then run each of them.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h3>Examples:</h3>
+    
+      <h4><div class='inline'><p>
+1: Define a simple Rule
+</p>
+</div></h4>
+      <pre class="example code"><span class='Rule constant id'>Rule</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='regexp val'>/foo/</span><span class='rparen token'>)</span> <span class='lbrace token'>{</span> <span class='puts identifier id'>puts</span> <span class='string val'>'fired'</span> <span class='rbrace token'>}</span>
+</pre>
+    
+      <h4><div class='inline'><p>
+2: Finding and firing Rules
+</p>
+</div></h4>
+      <pre class="example code"><span class='rev identifier id'>rev</span> <span class='assign token'>=</span> <span class='Revision constant id'>Revision</span><span class='dot token'>.</span><span class='new identifier id'>new</span>
+<span class='Rule constant id'>Rule</span><span class='dot token'>.</span><span class='matching identifier id'>matching</span><span class='lparen token'>(</span><span class='rev identifier id'>rev</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='rule identifier id'>rule</span><span class='bitor op'>|</span> <span class='rule identifier id'>rule</span><span class='dot token'>.</span><span class='run identifier id'>run</span><span class='lparen token'>(</span><span class='rev identifier id'>rev</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+</pre>
+    
+  </div>
+<h3>Author:</h3>
+<ul class="author">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'><p>
+Arjan van der Gaag
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Since:</h3>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'><p>
+0.3.0
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="CannotCompare-constant" class="">CannotCompare =
+          <div class="docstring">
+  <div class="discussion">
+    <p>
+Exception for when trying to apply a rule to something other than an
+instance of Revision.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+        </dt>
+        <dd><pre class="code"><span class='Class constant id'>Class</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='Exception constant id'>Exception</span><span class='rparen token'>)</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#block-instance_method" title="#block (instance method)">- (Object) <strong>block</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The callback to run on a match.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#criteria-instance_method" title="#criteria (instance method)">- (Object) <strong>criteria</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+A hash of Revision attributes and regular expressions to match against.
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#matching-class_method" title="matching (class method)">+ (Array&lt;Rule&gt;) <strong>matching</strong>(revision) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Return an array of all existing Rule objects that match the given revision.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#reset-class_method" title="reset (class method)">+ (Object) <strong>reset</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Reset the list of known rules, deleting all currently known rules.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#rules-class_method" title="rules (class method)">+ (Array&lt;Rule&gt;) <strong>rules</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Return an array of all rules currently defined.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#%3D%3D%3D-instance_method" title="#=== (instance method)">- (Boolean) <strong>===</strong>(other) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Use <tt><a href="#matches%3F-instance_method" title="Subtrigger::Rule#matches? (method)">Rule#matches?</a></tt> to see if this <tt>Rule</tt> matches the given
+<tt>Revision</tt>.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Rule) <strong>initialize</strong>(pattern_or_options, &amp;block) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Create a new Rule object with criteria for different properties of a
+Revision.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#matches%3F-instance_method" title="#matches? (instance method)">- (Boolean) <strong>matches?</strong>(revision) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+See if the current rule matches a given subversion revision.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#run-instance_method" title="#run (instance method)">- (nil) <strong>run</strong>(rev) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Call this Rule&#8217;s callback method with the give Revision object.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>initialize</strong>(pattern, &amp;block) </span>
+    
+      <span class="overload">- (<tt>Object</tt>) <strong>initialize</strong>(options, &amp;block) </span>
+    
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Create a new Rule object with criteria for different properties of a
+Revision. The required block defines the callback to run. It will have the
+current Revision object yielded to it.
+</p>
+<p>
+Criteria are Ruby objects that should match (`===`) a Revision&#8217;s
+attributes. These would usually be regular expressions, but they can be
+strings or custom objects if you want to.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <h3>Overloads:</h3>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>initialize</strong>(pattern, &amp;block) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Define a rule with a pattern matching the log message
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Regex</tt>)</span>
+      
+      
+        <span class='name'>pattern</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+is the regular expression to match against the revision&#8217;s log message
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">- (<tt>Object</tt>) <strong>initialize</strong>(options, &amp;block) </span>
+        <div class="docstring">
+  <div class="discussion">
+    <p>
+Define a rule with various criteria in a hash.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <span class='name'>options</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+defines matching criteria.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  
+    
+    
+    <h3>Options Hash (<tt>options</tt>):</h3>
+    <ul class="option">
+      
+        <li>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="name">:author</span>
+          <span class="default">
+            
+              <span class="na">N/A</span>
+            
+          </span>
+          &mdash;<div class='inline'><p>
+Criterium for Revision#author
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="name">:date</span>
+          <span class="default">
+            
+              <span class="na">N/A</span>
+            
+          </span>
+          &mdash;<div class='inline'><p>
+Criterium for Revision#date
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="name">:number</span>
+          <span class="default">
+            
+              <span class="na">N/A</span>
+            
+          </span>
+          &mdash;<div class='inline'><p>
+Criterium for Revision#number
+</p>
+</div>
+        </tr>
+      
+        <li>
+          <span class="type">(<tt>Object</tt>)</span>
+          <span class="name">:project</span>
+          <span class="default">
+            
+              <span class="na">N/A</span>
+            
+          </span>
+          &mdash;<div class='inline'><p>
+Criterium for Revision#project
+</p>
+</div>
+        </tr>
+      
+    </ul>
+  
+    
+    
+
+</div>
+      </li>
+    
+  </ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 90</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='pattern_or_options identifier id'>pattern_or_options</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='block identifier id'>block</span><span class='rparen token'>)</span>
+  <span class='raise identifier id'>raise</span> <span class='ArgumentError constant id'>ArgumentError</span><span class='comma token'>,</span> <span class='string val'>'a Rule requires a block'</span> <span class='unless unless_mod kw'>unless</span> <span class='block_given? fid id'>block_given?</span>
+
+  <span class='comment val'># If not given a hash, we build a hash defaulting on message</span>
+  <span class='unless unless kw'>unless</span> <span class='pattern_or_options identifier id'>pattern_or_options</span><span class='dot token'>.</span><span class='is_a? fid id'>is_a?</span><span class='lparen token'>(</span><span class='Hash constant id'>Hash</span><span class='rparen token'>)</span>
+    <span class='pattern_or_options identifier id'>pattern_or_options</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span> <span class='symbol val'>:message</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='pattern_or_options identifier id'>pattern_or_options</span> <span class='rbrace token'>}</span>
+  <span class='end end kw'>end</span>
+
+  <span class='@criteria ivar id'>@criteria</span><span class='comma token'>,</span> <span class='@block ivar id'>@block</span> <span class='assign token'>=</span> <span class='pattern_or_options identifier id'>pattern_or_options</span><span class='comma token'>,</span> <span class='block identifier id'>block</span>
+  <span class='@criteria ivar id'>@criteria</span><span class='dot token'>.</span><span class='inspect identifier id'>inspect</span>
+  <span class='self self kw'>self</span><span class='dot token'>.</span><span class='class identifier id'>class</span><span class='dot token'>.</span><span class='register identifier id'>register</span> <span class='self self kw'>self</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <span id="block-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="block-instance_method">
+  
+    - (<tt>Object</tt>) <strong>block</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The callback to run on a match
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 32</span>
+
+<span class='def def kw'>def</span> <span class='block identifier id'>block</span>
+  <span class='@block ivar id'>@block</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <span id="criteria-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="criteria-instance_method">
+  
+    - (<tt>Object</tt>) <strong>criteria</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A hash of Revision attributes and regular expressions to match against
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 29</span>
+
+<span class='def def kw'>def</span> <span class='criteria identifier id'>criteria</span>
+  <span class='@criteria ivar id'>@criteria</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="matching-class_method">
+  
+    + (<tt>Array&lt;<a href="" title="Subtrigger::Rule (class)">Rule</a>&gt;</tt>) <strong>matching</strong>(revision) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Return an array of all existing Rule objects that match the given revision.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="Revision.html" title="Subtrigger::Revision (class)">Revision</a></tt>)</span>
+      
+      
+        <span class='name'>revision</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+is the revision to compare rules to.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;<a href="" title="Subtrigger::Rule (class)">Rule</a>&gt;</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+list of all matching rules
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+67
+68
+69</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 67</span>
+
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='matching identifier id'>matching</span><span class='lparen token'>(</span><span class='revision identifier id'>revision</span><span class='rparen token'>)</span>
+  <span class='@rules ivar id'>@rules</span><span class='dot token'>.</span><span class='select identifier id'>select</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='child identifier id'>child</span><span class='bitor op'>|</span> <span class='child identifier id'>child</span> <span class='eqq op'>===</span> <span class='revision identifier id'>revision</span> <span class='rbrace token'>}</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="reset-class_method">
+  
+    + (<tt>Object</tt>) <strong>reset</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Reset the list of known rules, deleting all currently known rules.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'></span>
+      
+      
+      
+      
+        
+        <div class='inline'><p>
+nil
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 58</span>
+
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='reset identifier id'>reset</span>
+  <span class='@rules ivar id'>@rules</span> <span class='assign token'>=</span> <span class='lbrack token'>[</span><span class='rbrack token'>]</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="rules-class_method">
+  
+    + (<tt>Array&lt;<a href="" title="Subtrigger::Rule (class)">Rule</a>&gt;</tt>) <strong>rules</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Return an array of all rules currently defined.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;<a href="" title="Subtrigger::Rule (class)">Rule</a>&gt;</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51
+52
+53</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 51</span>
+
+<span class='def def kw'>def</span> <span class='self self kw'>self</span><span class='dot token'>.</span><span class='rules identifier id'>rules</span>
+  <span class='@rules ivar id'>@rules</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="===-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>===</strong>(other) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Use <tt><a href="#matches%3F-instance_method" title="Subtrigger::Rule#matches? (method)">#matches?</a></tt> to see if this <tt>Rule</tt> matches the given
+<tt>Revision</tt>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+        <span class='name'>the</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+object to compare to
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><a href="#matches%3F-instance_method" title="Subtrigger::Rule#matches? (method)">#matches?</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 116</span>
+
+<span class='def def kw'>def</span> <span class='eqq op'>===</span><span class='lparen token'>(</span><span class='other identifier id'>other</span><span class='rparen token'>)</span>
+  <span class='matches? fid id'>matches?</span><span class='lparen token'>(</span><span class='other identifier id'>other</span><span class='rparen token'>)</span>
+<span class='rescue rescue kw'>rescue</span> <span class='CannotCompare constant id'>CannotCompare</span>
+  <span class='super super kw'>super</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="matches?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>matches?</strong>(revision) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+See if the current rule matches a given subversion revision.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Parameters:</h3>
+<ul class="param">
+  
+    <li>
+      
+        <span class='type'>(<tt><a href="Revision.html" title="Subtrigger::Revision (class)">Revision</a></tt>)</span>
+      
+      
+        <span class='name'>revision</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+the Revision object to compare to.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+<h3>Raises:</h3>
+<ul class="raise">
+  
+    <li>
+      
+        <span class='type'></span>
+      
+      
+      
+      
+        
+        <div class='inline'><p>
+Subtrigger::Rule::CannotCompare when comparing to something other than a
+revision.
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+  <h3>See Also:</h3>
+  <ul class="see">
+    
+      <li><a href="#%3D%3D%3D-instance_method" title="Subtrigger::Rule#=== (method)">#===</a></li>
+    
+  </ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 129</span>
+
+<span class='def def kw'>def</span> <span class='matches? fid id'>matches?</span><span class='lparen token'>(</span><span class='revision identifier id'>revision</span><span class='rparen token'>)</span>
+  <span class='raise identifier id'>raise</span> <span class='CannotCompare constant id'>CannotCompare</span> <span class='unless unless_mod kw'>unless</span> <span class='@criteria ivar id'>@criteria</span><span class='dot token'>.</span><span class='keys identifier id'>keys</span><span class='dot token'>.</span><span class='all? fid id'>all?</span> <span class='lbrace token'>{</span> <span class='bitor op'>|</span><span class='k identifier id'>k</span><span class='bitor op'>|</span> <span class='k identifier id'>k</span> <span class='eq op'>==</span> <span class='symbol val'>:all</span> <span class='orop op'>||</span> <span class='revision identifier id'>revision</span><span class='dot token'>.</span><span class='respond_to? fid id'>respond_to?</span><span class='lparen token'>(</span><span class='k identifier id'>k</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+  <span class='match identifier id'>match</span> <span class='assign token'>=</span> <span class='@criteria ivar id'>@criteria</span><span class='dot token'>.</span><span class='any? fid id'>any?</span>
+  <span class='@criteria ivar id'>@criteria</span><span class='dot token'>.</span><span class='each_pair identifier id'>each_pair</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='key identifier id'>key</span><span class='comma token'>,</span> <span class='value identifier id'>value</span><span class='bitor op'>|</span>
+    <span class='if if kw'>if</span> <span class='key identifier id'>key</span> <span class='eq op'>==</span> <span class='symbol val'>:all</span>
+      <span class='match identifier id'>match</span> <span class='assign token'>=</span> <span class='lparen token'>(</span><span class='value identifier id'>value</span> <span class='eqq op'>===</span> <span class='revision identifier id'>revision</span><span class='rparen token'>)</span>
+    <span class='else else kw'>else</span>
+      <span class='match identifier id'>match</span> <span class='opasgn op'>&amp;=</span> <span class='lparen token'>(</span><span class='value identifier id'>value</span> <span class='eqq op'>===</span> <span class='revision identifier id'>revision</span><span class='dot token'>.</span><span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='key identifier id'>key</span><span class='dot token'>.</span><span class='to_sym identifier id'>to_sym</span><span class='rparen token'>)</span><span class='rparen token'>)</span>
+    <span class='end end kw'>end</span>
+  <span class='end end kw'>end</span>
+  <span class='match identifier id'>match</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="run-instance_method">
+  
+    - (<tt>nil</tt>) <strong>run</strong>(rev) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Call this Rule&#8217;s callback method with the give Revision object.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+105
+106
+107
+108</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/rule.rb', line 105</span>
+
+<span class='def def kw'>def</span> <span class='run identifier id'>run</span><span class='lparen token'>(</span><span class='rev identifier id'>rev</span><span class='rparen token'>)</span>
+  <span class='@rev ivar id'>@rev</span> <span class='assign token'>=</span> <span class='rev identifier id'>rev</span>
+  <span class='block identifier id'>block</span><span class='dot token'>.</span><span class='call identifier id'>call</span><span class='lparen token'>(</span><span class='@rev ivar id'>@rev</span><span class='comma token'>,</span> <span class='collect_captures identifier id'>collect_captures</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Fri Jul 16 10:55:15 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.8 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>

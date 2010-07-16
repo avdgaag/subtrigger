@@ -1,0 +1,615 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Class: Subtrigger::Revision</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (R)</a> &raquo; 
+    <span class='title'><a href="../Subtrigger.html" title="Subtrigger (module)">Subtrigger</a></span>
+     &raquo; 
+    <span class="title">Revision</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Subtrigger::Revision
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Subtrigger::Revision</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/subtrigger/revision.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+A simple wrapper around the output of Subversion&#8217;s <tt>svnlook</tt>
+command.
+</p>
+<p>
+This class will let you make simple queries against the properties of a
+Subversion revision. It parses its output into keys and values so you can
+perform operations on them.
+</p>
+<h2>Attributes</h2>
+<p>
+It knows about the following attributes:
+</p>
+<ul>
+<li>Revision number
+
+</li>
+<li>Author
+
+</li>
+<li>Timestamp
+
+</li>
+<li>Log message
+
+</li>
+<li>changed directories
+
+</li>
+</ul>
+<p>
+This works by passing in the number of the revision to use, the raw output
+of <tt>svnlook info</tt> and the raw output of <tt>svnlook
+dirs-changed</tt>.
+</p>
+<h2>Special attributes</h2>
+<p>
+Revision knows about changed projects. This is extracted from the list of
+changed directories. A project is a directory that is directly above a
+directory named <tt>trunk</tt>, <tt>branches</tt> or <tt>tags</tt>. So when
+a directory <tt>/internal/accounting/trunk</tt> is changed, the project
+<tt>/internal/accounting</tt> is reported.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h3>Examples:</h3>
+    
+      <h4><div class='inline'><p>
+Example of raw input for <tt>info</tt>
+</p>
+</div></h4>
+      <pre class="example code"><span class='john identifier id'>john</span>
+<span class='integer val'>2010</span><span class='minus op'>-</span><span class='integer val'>07</span><span class='minus op'>-</span><span class='integer val'>05</span> <span class='integer val'>17</span><span class='symbol val'>:00</span><span class='symbol val'>:00</span> <span class='plus op'>+</span><span class='integer val'>0200</span> <span class='lparen token'>(</span><span class='Mon constant id'>Mon</span><span class='comma token'>,</span> <span class='integer val'>01</span> <span class='Jan constant id'>Jan</span> <span class='integer val'>2010</span><span class='rparen token'>)</span>
+<span class='integer val'>215</span>
+<span class='Description constant id'>Description</span> <span class='of identifier id'>of</span> <span class='log identifier id'>log</span>
+</pre>
+    
+      <h4><div class='inline'><p>
+Usage
+</p>
+</div></h4>
+      <pre class="example code"><span class='@revision ivar id'>@revision</span> <span class='assign token'>=</span> <span class='Revision constant id'>Revision</span><span class='dot token'>.</span><span class='new identifier id'>new</span><span class='lparen token'>(</span><span class='string val'>'...'</span><span class='rparen token'>)</span>
+<span class='@revision ivar id'>@revision</span><span class='dot token'>.</span><span class='author identifier id'>author</span>    <span class='comment val'># =&gt; 'john'</span>
+<span class='@revision ivar id'>@revision</span><span class='dot token'>.</span><span class='message identifier id'>message</span>   <span class='comment val'># =&gt; 'Description of log'</span>
+<span class='@revision ivar id'>@revision</span><span class='dot token'>.</span><span class='date identifier id'>date</span>      <span class='comment val'># =&gt; (instance of Time)</span>
+<span class='@revision ivar id'>@revision</span><span class='dot token'>.</span><span class='projects identifier id'>projects</span>  <span class='comment val'># =&gt; ['/project1', 'project2', ...]</span>
+</pre>
+    
+  </div>
+<h3>Author:</h3>
+<ul class="author">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'><p>
+Arjan van der Gaag
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+<h3>Since:</h3>
+<ul class="since">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'><p>
+0.3.0
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div>
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#attributes-instance_method" title="#attributes (instance method)">- (Object) <strong>attributes</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+the parsed Hash of attributes for this revision.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dirs_changed-instance_method" title="#dirs_changed (instance method)">- (Object) <strong>dirs_changed</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+A list of all directories that were changed in this revision.
+</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#raw-instance_method" title="#raw (instance method)">- (Object) <strong>raw</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    <span class="note title readonly">readonly</span>
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+The raw output of the svnlook command.
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (Revision) <strong>initialize</strong>(revision_number, info, dirs_changed) </a>
+    
+
+    
+  </span>
+  
+    <span class="note title constructor">constructor</span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+A new instance of Revision.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#projects-instance_method" title="#projects (instance method)">- (Array&lt;String&gt;) <strong>projects</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Creates a list of directory paths in the repository that have changes and
+contain a <tt>trunk</tt>, <tt>branches</tt> or <tt>tags</tt> directory.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+<div id="constructor_details" class="method_details_list">
+  <h2>Constructor Details</h2>
+  
+    <div class="method_details first">
+  <p class="signature first" id="initialize-instance_method">
+  
+    - (<tt><a href="" title="Subtrigger::Revision (class)">Revision</a></tt>) <strong>initialize</strong>(revision_number, info, dirs_changed) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A new instance of Revision
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58
+59
+60
+61</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/revision.rb', line 56</span>
+
+<span class='def def kw'>def</span> <span class='initialize identifier id'>initialize</span><span class='lparen token'>(</span><span class='revision_number identifier id'>revision_number</span><span class='comma token'>,</span> <span class='info identifier id'>info</span><span class='comma token'>,</span> <span class='dirs_changed identifier id'>dirs_changed</span><span class='rparen token'>)</span>
+  <span class='@attributes ivar id'>@attributes</span> <span class='assign token'>=</span> <span class='lbrace token'>{</span> <span class='symbol val'>:number</span> <span class='assign token'>=</span><span class='gt op'>&gt;</span> <span class='revision_number identifier id'>revision_number</span><span class='dot token'>.</span><span class='to_i identifier id'>to_i</span> <span class='rbrace token'>}</span>
+  <span class='@raw ivar id'>@raw</span> <span class='assign token'>=</span> <span class='info identifier id'>info</span>
+  <span class='@dirs_changed ivar id'>@dirs_changed</span> <span class='assign token'>=</span> <span class='dirs_changed identifier id'>dirs_changed</span><span class='dot token'>.</span><span class='split identifier id'>split</span>
+  <span class='parse identifier id'>parse</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+  
+</div>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id=""></span>
+      <span id="attributes-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="attributes-instance_method">
+  
+    - (<tt>Object</tt>) <strong>attributes</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+the parsed Hash of attributes for this revision
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/revision.rb', line 54</span>
+
+<span class='def def kw'>def</span> <span class='attributes identifier id'>attributes</span>
+  <span class='@attributes ivar id'>@attributes</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <span id="dirs_changed-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="dirs_changed-instance_method">
+  
+    - (<tt>Object</tt>) <strong>dirs_changed</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A list of all directories that were changed in this revision
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51
+52
+53</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/revision.rb', line 51</span>
+
+<span class='def def kw'>def</span> <span class='dirs_changed identifier id'>dirs_changed</span>
+  <span class='@dirs_changed ivar id'>@dirs_changed</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <span id="raw-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="raw-instance_method">
+  
+    - (<tt>Object</tt>) <strong>raw</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+The raw output of the svnlook command.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/revision.rb', line 48</span>
+
+<span class='def def kw'>def</span> <span class='raw identifier id'>raw</span>
+  <span class='@raw ivar id'>@raw</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="projects-instance_method">
+  
+    - (<tt>Array&lt;String&gt;</tt>) <strong>projects</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Creates a list of directory paths in the repository that have changes and
+contain a <tt>trunk</tt>, <tt>branches</tt> or <tt>tags</tt> directory.
+</p>
+<p>
+For example, a changed path in like <tt>/topdir/project_name/trunk</tt>
+would result in <tt>/topdir/project_name</tt>.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>
+list of changed project paths
+</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+77
+78
+79
+80
+81
+82</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/subtrigger/revision.rb', line 77</span>
+
+<span class='def def kw'>def</span> <span class='projects identifier id'>projects</span>
+  <span class='pattern identifier id'>pattern</span> <span class='assign token'>=</span> <span class='regexp val'>/\/(trunk|branches|tags)/</span>
+  <span class='dirs_changed identifier id'>dirs_changed</span><span class='dot token'>.</span><span class='grep identifier id'>grep</span><span class='lparen token'>(</span><span class='pattern identifier id'>pattern</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='do do kw'>do</span> <span class='bitor op'>|</span><span class='dir identifier id'>dir</span><span class='bitor op'>|</span>
+    <span class='dir identifier id'>dir</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='pattern identifier id'>pattern</span><span class='comma token'>,</span> <span class='integer val'>2</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='first identifier id'>first</span>
+  <span class='end end kw'>end</span><span class='dot token'>.</span><span class='uniq identifier id'>uniq</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Fri Jul 16 10:55:18 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.8 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>
