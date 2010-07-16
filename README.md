@@ -101,6 +101,21 @@ no `$PATH` or anything. Always use full absolute paths. Also, hooks are
 notoriously hard to debug, so make sure to write some debugging information
 somewhere so you know what is going on.
 
+## Changes
+
+Note that Subtrigger is still in early stages of development.
+Until it hits 1.0 there are bound to be major changes. 
+
+### 0.3.0
+
+* Complete rewrite of the system
+* Improved documentation
+* Improved test coverage
+* Added matching on more revision attributes
+* Added custom matcher objects
+* Use Pony for e-mail
+* Cleaner rules files
+
 ## Credits
 
 * **Author**: Arjan van der Gaag
