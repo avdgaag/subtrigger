@@ -120,8 +120,13 @@ Until it hits 1.0 there are bound to be major changes.
 
 * **Author**: Arjan van der Gaag
 * **E-mail**: arjan@arjanvandergaag.nl
-* **URL**: http://arjanvandergaag.nl
-* **Source**: http://github.com/avdgaag/subtrigger
+* **URL**: [http://arjanvandergaag.nl][1]
+* **Source**: [http://github.com/avdgaag/subtrigger][2]
+* **API documentation**: [http://avdgaag.github.com/subtrigger][3]
+
+[1]: http://arjanvandergaag.nl
+[2]: http://github.com/avdgaag/subtrigger
+[3]: http://avdgaag.github.com/subtrigger
 
 ## Note on Patches/Pull Requests
 
