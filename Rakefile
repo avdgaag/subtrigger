@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'bundler'
 require 'rake'
 
 begin
@@ -10,9 +11,7 @@ begin
     gem.email = "arjan@arjanvandergaag.nl"
     gem.homepage = "http://github.com/avdgaag/subtrigger"
     gem.authors = ["Arjan van der Gaag"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
-    gem.add_development_dependency "mocha", ">= 0"
-    gem.add_dependency 'pony'
+    gem.add_bundler_dependencies
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
