@@ -22,7 +22,7 @@ Ruby:
 
     /usr/bin/ruby -rubygems /path/to/repo/hooks/deploy.rb "$1" "$2"
 
-You could define triggers to…
+You could define triggers to...
 
 * Send out confirmation e-mails to specific developers
 * Auto-update a working copy on a production server
@@ -104,23 +104,15 @@ somewhere so you know what is going on.
 ## Changes
 
 Note that Subtrigger is still in early stages of development.
-Until it hits 1.0 there are bound to be major changes. 
+Until it hits 1.0 there are bound to be major changes.
 
-### 0.3.0
-
-* Complete rewrite of the system
-* Improved documentation
-* Improved test coverage
-* Added matching on more revision attributes
-* Added custom matcher objects
-* Use Pony for e-mail
-* Cleaner rules files
+See HISTORY.md for a detailed changelog.
 
 ## Credits
 
 * **Author**: Arjan van der Gaag
 * **E-mail**: arjan@arjanvandergaag.nl
-* **URL**: [http://arjanvandergaag.nl][1]
+* **URL**: [http://avdgaag.github.com/subtrigger][1]
 * **Source**: [http://github.com/avdgaag/subtrigger][2]
 * **API documentation**: [http://avdgaag.github.com/subtrigger][3]
 
@@ -138,26 +130,3 @@ Until it hits 1.0 there are bound to be major changes.
   (if you want to have your own version, that is fine but bump version in a
   commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
-
-## License
-
-Copyright (c) 2010 Arjan van der Gaag
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

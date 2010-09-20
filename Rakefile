@@ -42,5 +42,17 @@ task :test => :check_dependencies
 
 task :default => :test
 
-require 'yard'
-YARD::Rake::YardocTask.new
+begin
+  require 'yard'
+  YARD::Rake::YardocTask.new do |t|
+    t.options = [
+      '--files', 'LICENSE',
+      '--files', 'HISTORY.md',
+      '--title', 'Subtrigger API documentation'
+    ]
+  end
+rescue LoadError
+  task :yardoc do
+    abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
+  end
+end
